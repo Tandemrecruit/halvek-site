@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "wrangler dev",
     "predeploy": "node tools/check-public.mjs",
-    "deploy": "wrangler deploy",
+    "deploy": "node tools/deploy.mjs",
     "check": "node tools/check-public.mjs && wrangler deploy --dry-run --outdir .wrangler/dry-run"
   },
   "devDependencies": {

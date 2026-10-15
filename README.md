@@ -49,8 +49,12 @@ form, so the page itself confirms the request.
    account review if it asks (use: "notifications from my website's quote form, sent to my own
    inbox"). Credits expire six months after purchase (a new account's free credit after one
    month), and the form stops sending if they lapse.
-4. **Secrets.** Workers & Pages → long-firefly-ffac → Settings → Variables and Secrets → Add,
-   type **Secret**, twice: `TURNSTILE_SECRET_KEY` and `ZEPTOMAIL_TOKEN` (the Agent key).
+4. **Secrets.** `TURNSTILE_SECRET_KEY` and `ZEPTOMAIL_TOKEN` (the Agent key) are kept as build
+   secrets: Workers & Pages → long-firefly-ffac → Settings → Builds → Variables and secrets.
+   `npm run deploy` (tools/deploy.mjs) passes them on to the Worker as runtime secrets on every
+   deploy, so changing one there takes effect at the next deploy (push, or retry the latest
+   build). Secrets set directly under Settings → Variables and Secrets also work and are left
+   alone.
 
 To deploy from a computer instead: install Node.js 20 or later, then in this folder run
 `npm install`, `npx wrangler login` and `npm run deploy`. Secrets can be set with
