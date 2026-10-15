@@ -3,7 +3,8 @@
 //
 // Secrets (set in the Cloudflare dashboard or with `wrangler secret put`):
 //   TURNSTILE_SECRET_KEY  secret key of the Turnstile widget on the form
-//   ZEPTOMAIL_TOKEN       Send Mail token of the ZeptoMail Mail Agent
+//   ZEPTOMAIL_TOKEN       the Agent key (Send Mail token) of a Zoho CPaaS Agent; Zoho CPaaS is
+//                         what ZeptoMail is called now
 // Variables (wrangler.jsonc): QUOTE_TO, QUOTE_FROM, ALLOWED_HOSTNAMES.
 // ZEPTOMAIL_URL and TURNSTILE_VERIFY_URL exist only so local tests can point at a mock.
 
@@ -28,7 +29,9 @@ const FIELD_LIMITS = {
 };
 const PACKAGES = ["Fitment part", "Replacement part", "Product design", "Printed copies", "Not sure"];
 
-const ZEPTOMAIL_URL = "https://api.zeptomail.com/v1.1/email";
+// Zoho's current address for the send API, then the older ZeptoMail one, which is tried when
+// the first can't be reached or turns the key away.
+const MAIL_API_URLS = ["https://cpaas.zoho.com/v1.1/email", "https://api.zeptomail.com/v1.1/email"];
 const TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 const TURNSTILE_ACTION = "quote";
 
@@ -36,6 +39,8 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname === "/api/quote") return handleQuote(request, env);
+    // Lets the page fall back to email while the secrets aren't set (right after a first deploy).
+    if (url.pathname === "/api/quote/status") return json({ ready: Boolean(env.TURNSTILE_SECRET_KEY && env.ZEPTOMAIL_TOKEN) });
     if (url.pathname.startsWith("/api/")) return json({ ok: false, error: "not_found" }, 404);
     return env.ASSETS.fetch(request);
   },
@@ -284,13 +289,23 @@ function shortName(name) {
 // Reply-To or attachments, so a bad address or an odd file can't lose the lead.
 async function deliver({ fields, attachments, ref, env, trapped }) {
   const fullBody = await buildBody(fields, attachments, ref, env, { trapped });
-  let first = await zeptoSend(fullBody, env, 25_000);
-  // A dropped connection says nothing about the email itself, so the full email gets one more try.
-  if (!first.ok && first.status === 0 && first.detail !== "TimeoutError") first = await zeptoSend(fullBody, env, 25_000);
-  if (first.ok) return { ok: true };
+  // Tests point ZEPTOMAIL_URL at a mock; the second entry then just retries it.
+  const urls = env.ZEPTOMAIL_URL ? [env.ZEPTOMAIL_URL, env.ZEPTOMAIL_URL] : MAIL_API_URLS;
+  let first;
+  let answeredUrl = urls[0];
+  for (const url of urls) {
+    first = await zeptoSend(url, fullBody, env, 25_000);
+    if (first.ok) return { ok: true };
+    if (first.status) answeredUrl = url;
+    // Only trouble with the address itself is worth the other one: no answer, not found, the key
+    // turned away, or a server error. A refusal of the email's content would repeat there.
+    const hostTrouble =
+      (first.status === 0 && first.detail !== "TimeoutError") || [401, 403, 404].includes(first.status) || first.status >= 500;
+    if (!hostTrouble) break;
+  }
   log(ref, "retrying", { status: first.status, detail: first.detail });
   const note = `ZeptoMail refused the full request (${first.status || "no answer"}${first.detail ? `, ${first.detail}` : ""}), so this copy has no attachments and no Reply-To. Write to ${fields.email} directly${attachments.length ? " and ask for the files again" : ""}.`;
-  const second = await zeptoSend(await buildBody(fields, [], ref, env, { trapped, note, listedFiles: attachments, noReplyTo: true }), env, 15_000);
+  const second = await zeptoSend(answeredUrl, await buildBody(fields, [], ref, env, { trapped, note, listedFiles: attachments, noReplyTo: true }), env, 15_000);
   if (second.ok) return { ok: true, filesDropped: attachments.length > 0 };
   return { ok: false, first, second };
 }
@@ -332,9 +347,9 @@ async function buildBody(fields, attachments, ref, env, { trapped = false, note 
   return new Blob(parts, { type: "application/json" });
 }
 
-async function zeptoSend(body, env, timeoutMs) {
+async function zeptoSend(url, body, env, timeoutMs) {
   try {
-    const res = await fetch(env.ZEPTOMAIL_URL || ZEPTOMAIL_URL, {
+    const res = await fetch(url, {
       method: "POST",
       headers: {
         Authorization: zeptoAuth(env.ZEPTOMAIL_TOKEN),

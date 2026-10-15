@@ -29,6 +29,7 @@
   var buttonLabel = button.textContent;
   var sent = el("q-sent");
   var sentNote = el("q-sent-note");
+  var offline = el("q-offline");
   var again = el("q-again");
   var turnstileBox = el("q-turnstile");
 
@@ -439,17 +440,46 @@
     });
   }
 
+  // ---- Is the form switched on? -------------------------------------------------
+
+  // Right after a first deploy the Worker has no secrets yet and can't send. Until it can, the
+  // form gives way to the email route, so nobody fills it in for nothing.
+  function showOffline() {
+    if (!offline || !sent.hidden) return;
+    // Anything already typed goes into the email, so it isn't typed twice.
+    var link = offline.querySelector('a[href^="mailto:"]');
+    if (link && form.elements.details.value.trim()) link.href = mailtoHref();
+    form.hidden = true;
+    offline.hidden = false;
+  }
+
+  var statusChecked = false;
+  function checkReady() {
+    if (statusChecked || !window.fetch) return;
+    statusChecked = true;
+    fetch("/api/quote/status", { cache: "no-store" })
+      .then(function (res) { return res.ok ? res.json() : null; })
+      .then(function (body) { if (body && body.ready === false) showOffline(); })
+      .catch(function () { /* can't tell; leave the form up */ });
+  }
+
   // Load the check once someone is near the form, so it has usually finished by the time they send.
+  function nearForm() {
+    checkReady();
+    startTurnstile();
+  }
   if ("IntersectionObserver" in window) {
     var observer = new IntersectionObserver(function (entries) {
       if (entries.some(function (e) { return e.isIntersecting; })) {
         observer.disconnect();
-        startTurnstile();
+        nearForm();
       }
     }, { rootMargin: "800px 0px" });
     observer.observe(form);
+  } else {
+    checkReady();
   }
-  form.addEventListener("focusin", function () { startTurnstile(); });
+  form.addEventListener("focusin", nearForm);
 
   // ---- Status and sending ---------------------------------------------------
 
@@ -601,6 +631,10 @@
     }
     setBusy(false);
     var code = body.error || "";
+    if (code === "not_configured") {
+      showOffline();
+      return;
+    }
     var input = body.field ? el("q-" + body.field) : null;
     if (input) {
       var message = code === "bad_email"

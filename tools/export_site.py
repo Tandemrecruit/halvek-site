@@ -64,7 +64,7 @@ body = re.sub(r"\n{3,}", "\n\n", body)
 if body.count('data-sitekey="TURNSTILE_SITE_KEY"') != 1:
     sys.exit("expected one Turnstile placeholder in the form")
 body = body.replace('data-sitekey="TURNSTILE_SITE_KEY"', f'data-sitekey="{site_key}"')
-for needed in ('id="quote-form"', 'id="q-sent-title"', 'href="#start"'):
+for needed in ('id="quote-form"', 'id="q-sent-title"', 'id="q-offline"', 'href="#start"'):
     if needed not in body:
         sys.exit(f"form markup changed: {needed} not found")
 

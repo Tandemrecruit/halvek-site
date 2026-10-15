@@ -69,7 +69,7 @@ def export_test_site():
     )
 
 
-def write_config(rate_limit):
+def write_config(rate_limit, configured=True):
     text = (ROOT / "wrangler.jsonc").read_text(encoding="utf-8")
     config = json.loads("\n".join(line for line in text.splitlines() if not line.strip().startswith("//")))
     config["main"] = str(ROOT / "src" / "worker.js")
@@ -84,7 +84,7 @@ def write_config(rate_limit):
         "\n".join(
             [
                 "TURNSTILE_SECRET_KEY=test-secret",
-                "ZEPTOMAIL_TOKEN=test-token",
+                "ZEPTOMAIL_TOKEN=test-token" if configured else "",
                 f"ZEPTOMAIL_URL={MOCK}/v1.1/email",
                 f"TURNSTILE_VERIFY_URL={MOCK}/siteverify",
                 "ALLOWED_HOSTNAMES=halvek.co,127.0.0.1",
@@ -220,7 +220,7 @@ def no_overflow(page):
 def scenario_layout_and_validation(browser):
     page = new_page(browser)
     check("page has no script errors on load", not page.errors, "; ".join(page.errors))
-    hrefs = page.eval_on_selector_all("a", "els => els.filter(a => a.textContent.trim() === 'Request a quote').map(a => a.getAttribute('href'))")
+    hrefs = page.eval_on_selector_all("a", "els => els.filter(a => a.textContent.trim() === 'Request a quote' && !a.closest('#q-offline')).map(a => a.getAttribute('href'))")
     check("every Request a quote link goes to the form", hrefs and all(h == "#start" for h in hrefs), str(hrefs))
     page.click("section >> text=Request a quote")
     page.wait_for_timeout(900)
@@ -228,6 +228,7 @@ def scenario_layout_and_validation(browser):
     check("hero button scrolls to Start a project", abs(top) < 40, f"top={top}")
     check("Turnstile loads with the form's action", page.evaluate("() => window.__turnstile && window.__turnstile.action") == "quote")
     check("Turnstile gets the site key from the page", page.evaluate("() => window.__turnstile && window.__turnstile.sitekey") == TEST_SITE_KEY)
+    check("form stays up when the Worker is set up", page.is_visible("#quote-form") and page.is_hidden("#q-offline"))
 
     page.click("#quote-form button[type=submit]")
     page.wait_for_timeout(200)
@@ -543,6 +544,30 @@ def scenario_direct_requests(browser):
     page.context.close()
 
 
+def scenario_not_configured(browser):
+    # Right after the first deploy the secrets aren't set yet: the form should step aside for email.
+    status = json.loads(urllib.request.urlopen(BASE + "/api/quote/status", timeout=10).read())
+    check("status says not ready without secrets", status == {"ready": False}, str(status))
+    page = new_page(browser)
+    page.click("section >> text=Request a quote")
+    page.wait_for_selector("#q-offline:not([hidden])", timeout=10000)
+    check("form steps aside for email when not set up", page.is_hidden("#quote-form") and page.is_visible("#q-offline"))
+    href = page.get_attribute("#q-offline a", "href")
+    check("email route offered instead", href.startswith("mailto:quotes@halvek.co"), href)
+    page.locator("#start").screenshot(path=str(SHOTS / "desktop-offline.png"))
+    page.context.close()
+
+    # Someone who filled the form before the check answered gets the email route with their details.
+    page = new_page(browser)
+    page.route("**/api/quote/status", lambda r: r.fulfill(status=200, content_type="application/json", body='{"ready": true}'))
+    fill_required(page)
+    page.click("#quote-form button[type=submit]")
+    page.wait_for_selector("#q-offline:not([hidden])", timeout=20000)
+    href = page.get_attribute("#q-offline a", "href")
+    check("details carried into the email when sending fails for setup", "Test%20Client" in href, href[:100])
+    page.context.close()
+
+
 def scenario_rate_limit(browser):
     page = new_page(browser)
     statuses = page.evaluate(
@@ -592,6 +617,13 @@ def main():
                 scenario_rate_limit(browser)
             except Exception as err:
                 check("scenario_rate_limit ran to the end", False, repr(err)[:300])
+            stop(dev)
+            write_config(rate_limit=1000, configured=False)
+            dev = start_dev()
+            try:
+                scenario_not_configured(browser)
+            except Exception as err:
+                check("scenario_not_configured ran to the end", False, repr(err)[:300])
             browser.close()
     finally:
         stop(dev)

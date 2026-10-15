@@ -19,12 +19,16 @@ The Halvek website and its quote form, deployed as one Cloudflare Worker (`long-
    isn't sure the visitor is a person).
 3. The Worker checks where the request came from, the rate limit (5 a minute per IP address),
    the Turnstile token, the fields, and the files (by their contents, not their names).
-4. It emails the request to quotes@halvek.co through ZeptoMail, from `website@halvek.co`, with
-   the client's address as Reply-To and the files attached. Reply to the email to answer the
-   client.
-5. If ZeptoMail refuses the email, the Worker sends a second, text-only copy (no attachments,
-   no Reply-To) that says so, so the lead still arrives. If that fails too, the visitor is asked
-   to email instead, and the request details are written to the Worker's logs (kept 3 days).
+4. It emails the request to quotes@halvek.co through Zoho CPaaS (the service formerly called
+   ZeptoMail), from `website@halvek.co`, with the client's address as Reply-To and the files
+   attached. Reply to the email to answer the client. The Worker uses Zoho's current send
+   address (`cpaas.zoho.com`) and falls back to the older `api.zeptomail.com` if the first
+   can't be reached or turns the key away.
+5. If the email is refused, the Worker sends a second, text-only copy (no attachments, no
+   Reply-To) that says so, so the lead still arrives. If that fails too, the visitor is asked to
+   email instead, and the request details are written to the Worker's logs (kept 3 days).
+6. Until both secrets are set, `/api/quote/status` reports not ready and the page swaps the form
+   for "Send it by email for now", so nobody fills in a form that can't send.
 
 Nothing is sent to the client automatically; anyone could type a stranger's address into the
 form, so the page itself confirms the request.
@@ -32,19 +36,21 @@ form, so the page itself confirms the request.
 ## One-time setup
 
 1. **Turnstile widget.** Cloudflare dashboard → Turnstile → Add widget. Name: "halvek.co quote
-   form". Hostname: `halvek.co`. Mode: Managed. Put the **site key** in `tools/site.json` (it is
-   public) and keep the **secret key** for step 3.
-2. **ZeptoMail Mail Agent.** ZeptoMail → Mail Agents → Add Mail Agent ("halvek website"),
-   linked to the verified domain halvek.co. Under SMTP/API → API, copy the **Send Mail token**.
-   Complete ZeptoMail's account review if it asks (use: "notifications from my website's quote
-   form, sent to my own inbox"). Buy credits before the free one runs out; credits expire six
-   months after purchase, and the form stops sending if they lapse.
-3. **Secrets.** Workers & Pages → long-firefly-ffac → Settings → Variables and Secrets → Add,
-   type **Secret**, twice: `TURNSTILE_SECRET_KEY` and `ZEPTOMAIL_TOKEN`.
-4. **Deploys from GitHub.** Workers & Pages → long-firefly-ffac → Settings → Builds → Connect,
+   form". Hostname: `halvek.co`. Mode: Managed. The **site key** goes in `tools/site.json` (it is
+   public); keep the **secret key** for step 4.
+2. **Deploys from GitHub.** Workers & Pages → long-firefly-ffac → Settings → Builds → Connect,
    choose this repository, branch `main`, no build command, deploy command `npm run deploy`.
    Every push to `main` then deploys. (`npm run deploy` refuses to deploy a `public/` without a
-   real Turnstile site key.)
+   real Turnstile site key.) The Worker needs this first deploy before Cloudflare lets it hold
+   secrets; until step 4 is done the page shows the email route instead of the form.
+3. **Zoho CPaaS Agent key.** In the Zoho Mail Admin Console (mailadmin.zoho.com) → Transactional
+   Emails → Agents → the agent → SMTP/API → API, copy the key (Zoho also calls it the Send Mail
+   token or Agent key). The same screens are in the Zoho CPaaS console itself. Complete Zoho's
+   account review if it asks (use: "notifications from my website's quote form, sent to my own
+   inbox"). Credits expire six months after purchase (a new account's free credit after one
+   month), and the form stops sending if they lapse.
+4. **Secrets.** Workers & Pages → long-firefly-ffac → Settings → Variables and Secrets → Add,
+   type **Secret**, twice: `TURNSTILE_SECRET_KEY` and `ZEPTOMAIL_TOKEN` (the Agent key).
 
 To deploy from a computer instead: install Node.js 20 or later, then in this folder run
 `npm install`, `npx wrangler login` and `npm run deploy`. Secrets can be set with
@@ -81,6 +87,6 @@ error paths, the no-JavaScript fallback and the rate limit. Screenshots go to
   largest allowed (5 MB) can go over. Cloudflare tolerates occasional overruns; if the Worker's
   metrics ever show "Exceeded CPU", the fix is the Workers Paid plan ($5 a month) or a lower
   file cap in `src/worker.js` and `src/client/quote.js`.
-- ZeptoMail limits a whole email to 15 MB; the 5 MB file cap stays well inside it.
+- Zoho limits a whole email to 15 MB; the 5 MB file cap stays well inside it.
 - Optional hardening: a WAF rate-limiting rule for `POST /api/quote` (the free plan includes
   one) stops floods before they reach the Worker's 100,000 requests a day.
