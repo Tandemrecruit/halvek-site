@@ -1,0 +1,15 @@
+{
+  "name": "halvek-site",
+  "private": true,
+  "description": "halvek.co: the static site and the quote form endpoint, deployed as one Cloudflare Worker.",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "predeploy": "node tools/check-public.mjs",
+    "deploy": "wrangler deploy",
+    "check": "node tools/check-public.mjs && wrangler deploy --dry-run --outdir .wrangler/dry-run"
+  },
+  "devDependencies": {
+    "wrangler": "4.146.0"
+  }
+}

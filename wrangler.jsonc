@@ -1,0 +1,41 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  // Must match the Worker's name in the Cloudflare dashboard.
+  "name": "long-firefly-ffac",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // Served only at halvek.co (www redirects there through a zone rule).
+  "routes": [{ "pattern": "halvek.co", "custom_domain": true }],
+  "workers_dev": false,
+  "preview_urls": false,
+
+  // The site itself. Only /api/* runs the Worker script; everything else is a plain file.
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"],
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  },
+
+  // QUOTE_FROM is deliberately not one of the inbox's own addresses: mail apps can treat a
+  // message "from yourself" as sent mail and ignore its Reply-To.
+  "vars": {
+    "QUOTE_TO": "quotes@halvek.co",
+    "QUOTE_FROM": "website@halvek.co",
+    "ALLOWED_HOSTNAMES": "halvek.co"
+  },
+
+  // Five quote requests per minute from one IP address is far more than a person sends.
+  "ratelimits": [
+    {
+      "name": "QUOTE_LIMITER",
+      "namespace_id": "1001",
+      "simple": { "limit": 5, "period": 60 }
+    }
+  ],
+
+  "observability": { "enabled": true }
+}

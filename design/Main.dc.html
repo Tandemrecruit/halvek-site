@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Halvek: custom parts, designed and 3D printed in Portage, Michigan</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Instrument+Sans:wdth,wght@75..100,400..700&amp;display=swap">
+<style>
+body{margin:0;background:#F6F5F1}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+a{color:inherit}
+[hidden]{display:none !important}
+:focus-visible{outline:2px solid #121212;outline-offset:2px}
+#start{scroll-margin-top:8px}
+.hv-input{display:block;width:100%;min-height:48px;margin:0;padding:11px 14px;border:1px solid #5A5A57;border-radius:0;background:#FFFFFF;color:#121212;font:inherit;font-size:17px;line-height:1.45;-webkit-appearance:none;appearance:none}
+textarea.hv-input{min-height:140px;resize:vertical}
+.hv-input:focus-visible{border-color:#121212}
+.hv-input[aria-invalid="true"]{border:2px solid #121212;padding:10px 13px}
+.hv-error{margin:0;font-size:15px;font-weight:600;line-height:1.4;color:#121212}
+.hv-error a{color:#121212;text-decoration-color:var(--accent,#A4472A);text-decoration-thickness:2px;text-underline-offset:4px}
+.hv-file-input{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);border:0;white-space:nowrap}
+.hv-file-input:focus-visible+label{outline:2px solid #121212;outline-offset:2px}
+.hv-file-input+label{cursor:pointer}
+.hv-files{list-style:none;margin:0;padding:0;border-bottom:1px solid #D9D7D0}
+.hv-files li{display:flex;align-items:center;gap:14px;padding:10px 0;border-top:1px solid #D9D7D0}
+.hv-files .hv-thumb{flex:0 0 56px;width:56px;height:56px;background:#E7E5DF;display:flex;align-items:center;justify-content:center;overflow:hidden;font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace;font-size:12px;font-weight:500;letter-spacing:0.1em;color:#5A5A57}
+.hv-files .hv-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.hv-files .hv-name{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:2px;font-size:15px;line-height:1.35}
+.hv-files .hv-name span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hv-files .hv-size{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace;font-size:13px;color:#5A5A57}
+.hv-link{-webkit-appearance:none;appearance:none;background:none;border:0;margin:0;padding:10px 0;min-height:44px;font:inherit;font-size:15px;font-weight:500;color:#121212;cursor:pointer;text-decoration:underline;text-decoration-color:var(--accent,#A4472A);text-decoration-thickness:2px;text-underline-offset:5px}
+.hv-radio{display:inline-flex;align-items:center;gap:10px;min-height:44px;font-size:16px;cursor:pointer}
+.hv-radio input{width:20px;height:20px;margin:0;accent-color:#121212;cursor:pointer}
+.hv-submit{cursor:pointer}
+.hv-submit[aria-disabled="true"]{cursor:progress;opacity:0.75}
+.hv-hp{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
+.hv-sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);border:0;white-space:nowrap}
+.hv-status:not(:empty){margin-bottom:16px}
+#q-turnstile:not(:empty){margin-bottom:16px}
+</style>
+</helmet>
+<div id="top" style="--accent: {{accent}}; width: 100%; background: #F6F5F1; color: #121212; font-family: 'Instrument Sans', 'Helvetica Neue', Helvetica, sans-serif; font-size: 17px; line-height: 1.55;">
+
+<header style="max-width: 1280px; margin: 0 auto; padding: 22px clamp(20px, 5vw, 72px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 32px;">
+<a href="#top" style="font-size: 22px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; color: #121212; text-decoration: none;">Halvek</a>
+<nav aria-label="Contact" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; font-size: 15px;">
+<a href="{{mailHref}}" style="color: #121212; text-decoration: none;">{{email}}</a>
+<a href="#start" style="display: inline-flex; align-items: center; min-height: 44px; padding: 10px 20px; background: {{accent}}; color: #FFFFFF; font-weight: 500; text-decoration: none; border-radius: 999px;">Request a quote</a>
+</nav>
+</header>
+
+<section style="max-width: 1280px; margin: 0 auto; padding: clamp(32px, 5vw, 72px) clamp(20px, 5vw, 72px) clamp(32px, 4vw, 56px); display: flex; flex-wrap: wrap; align-items: flex-end; gap: 28px clamp(32px, 6vw, 96px);">
+<h1 style="flex: 1 1 620px; min-width: 0; max-width: 15em; margin: 0; font-size: clamp(36px, 5.6vw, 80px); font-weight: 500; line-height: 1.02; letter-spacing: -0.035em; text-wrap: balance;">The part you can't buy, designed and 3D printed to fit.</h1>
+<div style="flex: 1 1 300px; max-width: 380px; min-width: 0; display: flex; flex-direction: column; gap: 22px;">
+<p style="margin: 0; font-size: 18px; color: #5A5A57; text-wrap: pretty;">Send a photo and a few measurements. You'll get a firm price before any work starts.</p>
+<a href="#start" style="align-self: flex-start; display: inline-flex; align-items: center; min-height: 52px; padding: 14px 28px; background: {{accent}}; color: #FFFFFF; font-size: 17px; font-weight: 500; text-decoration: none; border-radius: 999px;">Request a quote</a>
+</div>
+</section>
+
+<figure style="margin: 0;">
+<div style="width: 100%; aspect-ratio: 21 / 10; min-height: 280px; max-height: 760px; padding: clamp(16px, 2vw, 28px); background: #E7E5DF; display: flex; align-items: flex-end;">
+<span style="max-width: 36em; font-size: 14px; line-height: 1.5; color: #5A5A57;">Photo: a finished part on the bench beside its fit coupons and a pair of calipers. Window light, shot from slightly above.</span>
+</div>
+<figcaption style="max-width: 1280px; margin: 0 auto; padding: 14px clamp(20px, 5vw, 72px) 0; font-size: 14px; color: #5A5A57;">Fit coupons and the finished part, in the shop in Portage, Michigan.</figcaption>
+</figure>
+
+<section id="services" style="max-width: 1280px; margin: 0 auto; padding: clamp(64px, 8vw, 120px) clamp(20px, 5vw, 72px) 0; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 48px clamp(32px, 6vw, 96px);">
+<div style="flex: 1 1 280px; max-width: 360px; min-width: 0; display: flex; flex-direction: column; gap: 20px;">
+<h2 style="margin: 0; font-size: 24px; font-weight: 600; line-height: 1.2; letter-spacing: -0.015em;">Bring a problem like one of these</h2>
+<p style="margin: 0; font-size: 16px; color: #5A5A57; text-wrap: pretty;">Most jobs fit one of three packages, each with a set starting price.</p>
+<dl style="margin: 0; display: flex; flex-direction: column; border-bottom: 1px solid #D9D7D0;">
+<div style="display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-top: 1px solid #D9D7D0;"><dt style="font-size: 16px;">Fitment parts</dt><dd style="margin: 0; font-size: 16px; font-weight: 600;">from $450</dd></div>
+<div style="display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-top: 1px solid #D9D7D0;"><dt style="font-size: 16px;">Replacement parts</dt><dd style="margin: 0; font-size: 16px; font-weight: 600;">from $200</dd></div>
+<div style="display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-top: 1px solid #D9D7D0;"><dt style="font-size: 16px;">Product design</dt><dd style="margin: 0; font-size: 16px; font-weight: 600;">from $900</dd></div>
+</dl>
+<a href="#packages" style="align-self: flex-start; display: inline-block; padding: 10px 0; color: #121212; font-size: 16px; font-weight: 500; text-decoration: underline; text-decoration-color: {{accent}}; text-decoration-thickness: 2px; text-underline-offset: 5px;">What each package includes</a>
+</div>
+<ul style="flex: 2 1 560px; min-width: 0; list-style: none; margin: 0; padding: 0; border-bottom: 1px solid #D9D7D0;">
+<li style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 32px; padding: 24px 0; border-top: 1px solid #D9D7D0;"><span style="flex: 1 1 440px; min-width: 0; font-size: clamp(22px, 2.3vw, 32px); font-weight: 500; line-height: 1.2; letter-spacing: -0.02em; text-wrap: pretty;">A sensor mount for the one machine the catalog doesn't cover.</span><span style="flex: 0 0 auto; font-size: 15px; color: #5A5A57;">Fitment part</span></li>
+<li style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 32px; padding: 24px 0; border-top: 1px solid #D9D7D0;"><span style="flex: 1 1 440px; min-width: 0; font-size: clamp(22px, 2.3vw, 32px); font-weight: 500; line-height: 1.2; letter-spacing: -0.02em; text-wrap: pretty;">A latch nobody makes anymore.</span><span style="flex: 0 0 auto; font-size: 15px; color: #5A5A57;">Replacement part</span></li>
+<li style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 32px; padding: 24px 0; border-top: 1px solid #D9D7D0;"><span style="flex: 1 1 440px; min-width: 0; font-size: clamp(22px, 2.3vw, 32px); font-weight: 500; line-height: 1.2; letter-spacing: -0.02em; text-wrap: pretty;">A product you want to sell, designed so the hundredth one prints just like the first.</span><span style="flex: 0 0 auto; font-size: 15px; color: #5A5A57;">Product design</span></li>
+<li style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 32px; padding: 24px 0; border-top: 1px solid #D9D7D0;"><span style="flex: 1 1 440px; min-width: 0; font-size: clamp(22px, 2.3vw, 32px); font-weight: 500; line-height: 1.2; letter-spacing: -0.02em; text-wrap: pretty;">A holder for one exact tool, so it stops rattling around the truck.</span><span style="flex: 0 0 auto; font-size: 15px; color: #5A5A57;">Fitment part</span></li>
+<li style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 32px; padding: 24px 0; border-top: 1px solid #D9D7D0;"><span style="flex: 1 1 440px; min-width: 0; font-size: clamp(22px, 2.3vw, 32px); font-weight: 500; line-height: 1.2; letter-spacing: -0.02em; text-wrap: pretty;">The one plastic part between a good machine and the scrap pile.</span><span style="flex: 0 0 auto; font-size: 15px; color: #5A5A57;">Replacement part</span></li>
+<li style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 32px; padding: 24px 0; border-top: 1px solid #D9D7D0;"><span style="flex: 1 1 440px; min-width: 0; font-size: clamp(22px, 2.3vw, 32px); font-weight: 500; line-height: 1.2; letter-spacing: -0.02em; text-wrap: pretty;">An original design for your print farm that you own outright, with the print settings already worked out.</span><span style="flex: 0 0 auto; font-size: 15px; color: #5A5A57;">Product design</span></li>
+</ul>
+</section>
+
+<section id="packages" style="max-width: 1280px; margin: 0 auto; padding: clamp(64px, 8vw, 120px) clamp(20px, 5vw, 72px) 0; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 48px clamp(32px, 6vw, 96px);">
+<div style="flex: 1 1 280px; max-width: 360px; min-width: 0; display: flex; flex-direction: column; gap: 20px;">
+<h2 style="margin: 0; font-size: 24px; font-weight: 600; line-height: 1.2; letter-spacing: -0.015em;">What each package includes</h2>
+<p style="margin: 0; font-size: 16px; color: #5A5A57; text-wrap: pretty;">Every package is quoted as one set price before work starts, with shipping billed at cost. Anything outside its scope goes on a change order you approve first.</p>
+<a href="#start" style="align-self: flex-start; display: inline-flex; align-items: center; min-height: 44px; padding: 10px 20px; background: {{accent}}; color: #FFFFFF; font-size: 15px; font-weight: 500; text-decoration: none; border-radius: 999px;">Request a quote</a>
+</div>
+<div style="flex: 2 1 560px; min-width: 0; display: flex; flex-direction: column; border-bottom: 1px solid #D9D7D0;">
+
+<article style="padding: 28px 0; border-top: 1px solid #D9D7D0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 20px 32px;">
+<div style="display: flex; flex-direction: column; gap: 8px;">
+<h3 style="margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.2;">Fitment part</h3>
+<p style="margin: 0; font-size: 15px; color: #5A5A57; text-wrap: pretty;">A mount, adapter, bracket, fixture or holder designed around hardware you already own.</p>
+</div>
+<ul style="margin: 0; padding: 0 0 0 1.1em; font-size: 15px; line-height: 1.5; display: flex; flex-direction: column; gap: 6px;">
+<li>A design fitted to your hardware, with up to two interfaces</li>
+<li>Hardware you send is back within about a week; a maker's CAD file can stand in for it</li>
+<li>Fit coupons: small test pieces of each interface, printed at two or three clearances and shipped to you to try on your hardware</li>
+<li>One round of revisions</li>
+<li>The finished part once you've approved the fit, with STEP and 3MF files and a print profile</li>
+<li>A permanent license to make and use the part, or own it outright, with the Fusion source file, for about 25% more</li>
+</ul>
+<dl style="margin: 0; display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 10px 12px; align-items: baseline;">
+<dt style="font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #5A5A57;">Price</dt>
+<dd style="margin: 0; font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace; font-size: 15px; line-height: 1.3;">$450</dd>
+<dt style="font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #5A5A57;">Turnaround</dt>
+<dd style="margin: 0; font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace; font-size: 15px; line-height: 1.3;">2–3 weeks</dd>
+</dl>
+</article>
+
+<article style="padding: 28px 0; border-top: 1px solid #D9D7D0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 20px 32px;">
+<div style="display: flex; flex-direction: column; gap: 8px;">
+<h3 style="margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.2;">Replacement part</h3>
+<p style="margin: 0; font-size: 15px; color: #5A5A57; text-wrap: pretty;">A broken plastic part remade from the original: clips, covers, brackets, latches, knobs and light-duty gears. Drop the pieces off around Portage and Kalamazoo, or mail them in.</p>
+<p style="margin: 0; font-size: 15px; color: #5A5A57; text-wrap: pretty;">Not for parts where a failure could hurt someone.</p>
+</div>
+<ul style="margin: 0; padding: 0 0 0 1.1em; font-size: 15px; line-height: 1.5; display: flex; flex-direction: column; gap: 6px;">
+<li>A model measured from your sample, with the part checked against it before it ships</li>
+<li>One finished part, with the model kept on file so another is just a reprint</li>
+<li>If it doesn't fit, one revision and reprint at no charge</li>
+<li>Simple means one body with no gears, threads or snap-fits; complex covers those, or two or more mating features. The tier is confirmed once your sample arrives</li>
+<li>Optional: the files to print spares yourself, yours outright, for about 25% more</li>
+</ul>
+<dl style="margin: 0; display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 10px 12px; align-items: baseline;">
+<dt style="font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #5A5A57;">Price</dt>
+<dd style="margin: 0; font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace; font-size: 15px; line-height: 1.3;">$200 simple<br>$350 complex</dd>
+<dt style="font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #5A5A57;">Turnaround</dt>
+<dd style="margin: 0; font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace; font-size: 15px; line-height: 1.3;">2–3 weeks</dd>
+</dl>
+</article>
+
+<article style="padding: 28px 0; border-top: 1px solid #D9D7D0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 20px 32px;">
+<div style="display: flex; flex-direction: column; gap: 8px;">
+<h3 style="margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.2;">Product design</h3>
+<p style="margin: 0; font-size: 15px; color: #5A5A57; text-wrap: pretty;">An original product designed for 3D printing, for a print farm, a small brand or an inventor.</p>
+</div>
+<ul style="margin: 0; padding: 0 0 0 1.1em; font-size: 15px; line-height: 1.5; display: flex; flex-direction: column; gap: 6px;">
+<li>Up to three parts, with tolerances set</li>
+<li>A printability review</li>
+<li>Two rounds of revisions</li>
+<li>A prototype and a print profile</li>
+<li>Exclusive ownership, with a written IP assignment</li>
+</ul>
+<dl style="margin: 0; display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 10px 12px; align-items: baseline;">
+<dt style="font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #5A5A57;">Price</dt>
+<dd style="margin: 0; font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace; font-size: 15px; line-height: 1.3;">from $900</dd>
+<dt style="font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #5A5A57;">Turnaround</dt>
+<dd style="margin: 0; font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace; font-size: 15px; line-height: 1.3;">4–6 weeks</dd>
+</dl>
+</article>
+
+<p style="margin: 0; padding: 20px 0 24px; border-top: 1px solid #D9D7D0; font-size: 15px; color: #5A5A57; max-width: 48em; text-wrap: pretty;">Printed copies of any design Halvek made: $15 per order plus print time and material, quoted up front, in about a week. Local pickup around Portage and Kalamazoo, or postage at cost.</p>
+
+</div>
+</section>
+
+<section id="why" style="max-width: 1280px; margin: 0 auto; padding: clamp(64px, 8vw, 120px) clamp(20px, 5vw, 72px) 0; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 48px clamp(32px, 6vw, 96px);">
+<div style="flex: 1 1 280px; max-width: 360px; min-width: 0; display: flex; flex-direction: column; gap: 20px;">
+<h2 style="margin: 0; font-size: 24px; font-weight: 600; line-height: 1.2; letter-spacing: -0.015em;">Why not do it in-house, or send it somewhere else?</h2>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; font-size: 16px; line-height: 1.5;">
+<li><strong style="font-weight: 600;">Tested before it ships.</strong> Fit is proven in plastic before your part is final: against your sample, or with a fit coupon you try on your own hardware.</li>
+<li><strong style="font-weight: 600;">One price, set up front.</strong> The price you agree to is the price you pay, plus shipping at cost and any sales tax. Anything outside the package is a change order you approve first.</li>
+<li><strong style="font-weight: 600;">Files you can change.</strong> Fitment and product design jobs come with STEP and 3MF files and a print profile, so you can print the part again or edit it in your own CAD. Every design is built parametric, so a version for another machine is a quick change order instead of a new design.</li>
+<li><strong style="font-weight: 600;">Rights in writing.</strong> A permanent license to make and use fitment parts, and outright ownership of product designs, agreed before work starts.</li>
+</ul>
+</div>
+<ul style="flex: 2 1 560px; min-width: 0; list-style: none; margin: 0; padding: 0; border-bottom: 1px solid #D9D7D0;">
+<li style="display: flex; flex-wrap: wrap; gap: 8px 32px; padding: 24px 0; border-top: 1px solid #D9D7D0;">
+<h3 style="flex: 0 0 220px; margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3;">Doing it in-house</h3>
+<p style="flex: 1 1 320px; min-width: 0; margin: 0; font-size: 16px; text-wrap: pretty;">Someone on your team spends the hours: CAD, measuring, and reprinting until it fits. Worth it if you have the skill and the time to spare.</p>
+</li>
+<li style="display: flex; flex-wrap: wrap; gap: 8px 32px; padding: 24px 0; border-top: 1px solid #D9D7D0;">
+<h3 style="flex: 0 0 220px; margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3;">A freelance CAD designer</h3>
+<p style="flex: 1 1 320px; min-width: 0; margin: 0; font-size: 16px; text-wrap: pretty;">Often cheaper per hour, but the job usually ends with a file. Finding out how it prints, and fixing what doesn't fit, is left to you.</p>
+</li>
+<li style="display: flex; flex-wrap: wrap; gap: 8px 32px; padding: 24px 0; border-top: 1px solid #D9D7D0;">
+<h3 style="flex: 0 0 220px; margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3;">An online print service</h3>
+<p style="flex: 1 1 320px; min-width: 0; margin: 0; font-size: 16px; text-wrap: pretty;">Cheap and fast per part, but it prints exactly the file you send. Someone still has to design the part and make it fit.</p>
+</li>
+<li style="display: flex; flex-wrap: wrap; gap: 8px 32px; padding: 24px 0; border-top: 1px solid #D9D7D0;">
+<h3 style="flex: 0 0 220px; margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3;">Halvek</h3>
+<p style="flex: 1 1 320px; min-width: 0; margin: 0; font-size: 16px; font-weight: 500; text-wrap: pretty;">Design, fit checks in plastic, and the files or the finished part for one set price, with local drop-off around Portage and Kalamazoo.</p>
+</li>
+</ul>
+</section>
+
+<section id="work" style="max-width: 1280px; margin: 0 auto; padding: clamp(64px, 8vw, 120px) clamp(20px, 5vw, 72px) 0; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 48px clamp(32px, 6vw, 96px);">
+<div style="flex: 1 1 280px; max-width: 360px; min-width: 0; display: flex; flex-direction: column; gap: 20px;">
+<h2 style="margin: 0; font-size: 24px; font-weight: 600; line-height: 1.2; letter-spacing: -0.015em;">Recent work</h2>
+<p style="margin: 0; font-size: 16px; color: #5A5A57; text-wrap: pretty;">Two finished pieces, and the one on the bench now.</p>
+</div>
+<div style="flex: 2 1 560px; min-width: 0; display: flex; flex-direction: column; border-bottom: 1px solid #D9D7D0;">
+
+<article style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 24px 32px; padding: 32px 0; border-top: 1px solid #D9D7D0;">
+<figure style="flex: 1 1 380px; min-width: 0; margin: 0;">
+<div style="width: 100%; aspect-ratio: 4 / 3; padding: 20px; background: #E7E5DF; display: flex; align-items: flex-end;">
+<span style="max-width: 30em; font-size: 14px; line-height: 1.5; color: #5A5A57;">Photo: the skeleton in the organizer, one tool column in place.</span>
+</div>
+</figure>
+<div style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 12px;">
+<p style="margin: 0; font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #5A5A57;">Product design · ABS + TPU · Fusion, parametric</p>
+<h3 style="margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.2;">Strata modular insert system</h3>
+<p style="margin: 0; font-size: 16px; text-wrap: pretty;">A rigid ABS skeleton for Milwaukee Packout compact organizers that takes swappable TPU tool columns, so a new tool means a new column instead of a new insert. The skeleton is parametric and print-validated.</p>
+</div>
+</article>
+
+<article style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 24px 32px; padding: 32px 0; border-top: 1px solid #D9D7D0;">
+<figure style="flex: 1 1 380px; min-width: 0; margin: 0;">
+<div style="width: 100%; aspect-ratio: 4 / 3; padding: 20px; background: #E7E5DF; display: flex; align-items: flex-end;">
+<span style="max-width: 30em; font-size: 14px; line-height: 1.5; color: #5A5A57;">Photo: the stand with the wheel clamped on and the pedals stored underneath.</span>
+</div>
+</figure>
+<div style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 12px;">
+<p style="margin: 0; font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #5A5A57;">Fitment · PETG · 3 parts + fit coupon</p>
+<h3 style="margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.2;">G923 wheel and pedal stand</h3>
+<p style="margin: 0; font-size: 16px; text-wrap: pretty;">A three-part PETG stand that stores a Logitech G923 wheel and pedals, split to print on a 256 mm bed and joined with half-laps and M4 bolts. The wheel clamps on the way it would to a desk.</p>
+</div>
+</article>
+
+<article style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 24px 32px; padding: 32px 0; border-top: 1px solid #D9D7D0;">
+<figure style="flex: 1 1 380px; min-width: 0; margin: 0;">
+<div style="width: 100%; aspect-ratio: 4 / 3; padding: 20px; background: #E7E5DF; display: flex; align-items: flex-end;">
+<span style="max-width: 30em; font-size: 14px; line-height: 1.5; color: #5A5A57;">Photo, when finished: the cradle mounted to the joist with the modem in place.</span>
+</div>
+</figure>
+<div style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 12px;">
+<p style="margin: 0; font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #5A5A57;">Fitment · In progress · One model, two instances</p>
+<h3 style="margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.2;">Modem and router bracket</h3>
+<p style="margin: 0; font-size: 16px; text-wrap: pretty;">A joist-mounted cradle that gets a cable modem off the basement floor, with the router as a second instance of the same parametric model: a parameter change instead of a second design.</p>
+</div>
+</article>
+
+</div>
+</section>
+
+<section id="process" style="max-width: 1280px; margin: 0 auto; padding: clamp(64px, 8vw, 120px) clamp(20px, 5vw, 72px) 0; display: flex; flex-direction: column; gap: 32px;">
+<h2 style="margin: 0; font-size: 24px; font-weight: 600; line-height: 1.2; letter-spacing: -0.015em;">How it works</h2>
+<ol style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 32px;">
+<li style="display: flex; flex-direction: column; gap: 10px; padding-top: 16px; border-top: 1px solid #121212;">
+<span style="font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.1em; color: #5A5A57;">01</span>
+<h3 style="margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3;">Send the details</h3>
+<p style="margin: 0; font-size: 16px; text-wrap: pretty;">What it is, what it has to fit, photos with a ruler in frame, and your deadline.</p>
+</li>
+<li style="display: flex; flex-direction: column; gap: 10px; padding-top: 16px; border-top: 1px solid #121212;">
+<span style="font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.1em; color: #5A5A57;">02</span>
+<h3 style="margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3;">Get a firm quote</h3>
+<p style="margin: 0; font-size: 16px; text-wrap: pretty;">A set price for your package within two business days, or a few questions first if anything is unclear. For a replacement part, photos get you the likely price and the sample gets you the firm one.</p>
+</li>
+<li style="display: flex; flex-direction: column; gap: 10px; padding-top: 16px; border-top: 1px solid #121212;">
+<span style="font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.1em; color: #5A5A57;">03</span>
+<h3 style="margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3;">Review the design</h3>
+<p style="margin: 0; font-size: 16px; text-wrap: pretty;">You check the model, and for fitment parts a fit coupon on your own hardware, before anything is final.</p>
+</li>
+<li style="display: flex; flex-direction: column; gap: 10px; padding-top: 16px; border-top: 1px solid #121212;">
+<span style="font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.1em; color: #5A5A57;">04</span>
+<h3 style="margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3;">Get your parts and files</h3>
+<p style="margin: 0; font-size: 16px; text-wrap: pretty;">Your finished parts and files ship once you've paid in full, or you pick them up in Portage.</p>
+</li>
+</ol>
+</section>
+
+<section id="questions" style="max-width: 1280px; margin: 0 auto; padding: clamp(64px, 8vw, 120px) clamp(20px, 5vw, 72px) 0; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 48px clamp(32px, 6vw, 96px);">
+<div style="flex: 1 1 280px; max-width: 360px; min-width: 0; display: flex; flex-direction: column; gap: 20px;">
+<h2 style="margin: 0; font-size: 24px; font-weight: 600; line-height: 1.2; letter-spacing: -0.015em;">Common questions</h2>
+<p style="margin: 0; font-size: 16px; color: #5A5A57; text-wrap: pretty;">Anything else, ask by email. You'll get a straight answer.</p>
+</div>
+<dl style="flex: 2 1 560px; min-width: 0; margin: 0; border-bottom: 1px solid #D9D7D0;">
+<div style="padding: 24px 0; border-top: 1px solid #D9D7D0; display: flex; flex-direction: column; gap: 8px;">
+<dt style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3;">Do I need a 3D printer?</dt>
+<dd style="margin: 0; font-size: 16px; max-width: 40em; text-wrap: pretty;">No. Every package includes printed parts shipped to you. Fitment and product design packages also include the files and a print profile; for replacement parts, the files are optional.</dd>
+</div>
+<div style="padding: 24px 0; border-top: 1px solid #D9D7D0; display: flex; flex-direction: column; gap: 8px;">
+<dt style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3;">Do I own the design?</dt>
+<dd style="margin: 0; font-size: 16px; max-width: 40em; text-wrap: pretty;">Product designs, yes: they come with a written IP assignment, so the design is yours outright. Fitment parts come with STEP and 3MF files and a permanent license to make and use the part. Halvek keeps the design, including the Fusion source file, and can offer it to others; to keep it yours alone, with the Fusion file, buy it outright for about 25% more. With a replacement part, you own the part, and Halvek keeps the model on file so another one is just a reprint. If you'd rather print your own, the files are yours outright for about 25% more.</dd>
+</div>
+<div style="padding: 24px 0; border-top: 1px solid #D9D7D0; display: flex; flex-direction: column; gap: 8px;">
+<dt style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3;">Can I sell prints of it on Etsy?</dt>
+<dd style="margin: 0; font-size: 16px; max-width: 40em; text-wrap: pretty;">Etsy requires 3D-printed items to come from the seller's own original design, and it hasn't said how commissioned designs count. A product design you own is yours on paper, but how Etsy treats it is Etsy's call, so check before you list.</dd>
+</div>
+<div style="padding: 24px 0; border-top: 1px solid #D9D7D0; display: flex; flex-direction: column; gap: 8px;">
+<dt style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3;">Is there anything you won't design?</dt>
+<dd style="margin: 0; font-size: 16px; max-width: 40em; text-wrap: pretty;">Parts where a failure could hurt someone: brakes, steering, suspension and other parts that control a vehicle; aircraft parts; structural supports, lifting gear and overhead mounts for anything heavy enough to hurt someone if it fell; fuel, gas and pressure parts; parts that enclose or insulate line-voltage wiring; machine guards and safety gear; anything that touches food; children's products; and medical devices. Also copies of another designer's files, and parts carrying logos or trademarks you don't own.</dd>
+</div>
+<div style="padding: 24px 0; border-top: 1px solid #D9D7D0; display: flex; flex-direction: column; gap: 8px;">
+<dt style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3;">When do I pay?</dt>
+<dd style="margin: 0; font-size: 16px; max-width: 40em; text-wrap: pretty;">Fitment parts and product design: half with the signed quote, and the rest once you've approved the fit or prototype, before the finished parts and files ship. Replacement parts: in full when you accept the firm quote, after your sample arrives. If the part doesn't fit, the first revision and reprint are free.</dd>
+</div>
+<div style="padding: 24px 0; border-top: 1px solid #D9D7D0; display: flex; flex-direction: column; gap: 8px;">
+<dt style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3;">Can I drop a part off locally?</dt>
+<dd style="margin: 0; font-size: 16px; max-width: 40em; text-wrap: pretty;">Yes, in the Portage and Kalamazoo area, by arrangement. Everything else ships.</dd>
+</div>
+</dl>
+</section>
+
+<section id="start" style="max-width: 1280px; margin: 0 auto; padding: clamp(64px, 8vw, 120px) clamp(20px, 5vw, 72px) 0; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 40px clamp(32px, 6vw, 96px);">
+<div style="flex: 1 1 280px; max-width: 360px; min-width: 0; display: flex; flex-direction: column; gap: 20px;">
+<h2 style="margin: 0; font-size: 24px; font-weight: 600; line-height: 1.2; letter-spacing: -0.015em;">Start a project</h2>
+<p style="margin: 0; font-size: 16px; color: #5A5A57; text-wrap: pretty;">Describe what you need and you'll hear back within two business days with a quote, or with a few questions if anything is unclear.</p>
+<p style="margin: 0; font-size: 15px; text-wrap: pretty;">The first three jobs are 25% off, in exchange for photos of the part in use and permission to write it up as a case study.</p>
+</div>
+<div style="flex: 2 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 32px;">
+
+<form id="quote-form" action="/api/quote" method="post" enctype="multipart/form-data" novalidate style="margin: 0; display: flex; flex-direction: column; gap: 28px;">
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 28px 24px;">
+<div style="display: flex; flex-direction: column; gap: 8px; min-width: 0;">
+<label for="q-name" style="font-size: 16px; font-weight: 600; line-height: 1.3;">Name</label>
+<input id="q-name" name="name" type="text" class="hv-input" autocomplete="name" maxlength="100" required aria-describedby="q-name-error">
+<p id="q-name-error" class="hv-error" hidden></p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px; min-width: 0;">
+<label for="q-email" style="font-size: 16px; font-weight: 600; line-height: 1.3;">Email</label>
+<input id="q-email" name="email" type="email" class="hv-input" autocomplete="email" maxlength="254" spellcheck="false" required aria-describedby="q-email-error">
+<p id="q-email-error" class="hv-error" hidden></p>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px; min-width: 0;">
+<label for="q-details" style="font-size: 16px; font-weight: 600; line-height: 1.3;">What do you need?</label>
+<p id="q-details-hint" style="margin: 0; font-size: 14px; line-height: 1.5; color: #5A5A57;">What it is and what it has to fit, with the make and model.</p>
+<textarea id="q-details" name="details" class="hv-input" rows="5" maxlength="5000" required aria-describedby="q-details-hint q-details-error"></textarea>
+<p id="q-details-error" class="hv-error" hidden></p>
+</div>
+
+<div role="group" aria-labelledby="q-optional" style="display: flex; flex-direction: column; gap: 28px; padding-top: 28px; border-top: 1px solid #D9D7D0;">
+<h3 id="q-optional" style="margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3;">Include if you can</h3>
+
+<div style="display: flex; flex-direction: column; gap: 8px; min-width: 0;">
+<span id="q-files-label" style="font-size: 16px; font-weight: 600; line-height: 1.3;">Photos or drawings</span>
+<p id="q-files-hint" style="margin: 0; font-size: 14px; line-height: 1.5; color: #5A5A57;">From a few angles, with a ruler or calipers in frame. Up to 8 photos or PDFs.</p>
+<input id="q-files" name="files" type="file" class="hv-file-input" multiple accept="image/*,application/pdf" aria-labelledby="q-files-label q-files-trigger" aria-describedby="q-files-hint q-files-error">
+<label id="q-files-trigger" for="q-files" style="align-self: flex-start; display: inline-flex; align-items: center; min-height: 44px; font-size: 16px; font-weight: 500; text-decoration: underline; text-decoration-color: {{accent}}; text-decoration-thickness: 2px; text-underline-offset: 5px;">Add photos</label>
+<ul id="q-file-list" class="hv-files" hidden></ul>
+<p id="q-files-error" class="hv-error" hidden></p>
+<p id="q-files-status" class="hv-sr" aria-live="polite"></p>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px; min-width: 0;">
+<label for="q-measurements" style="font-size: 16px; font-weight: 600; line-height: 1.3;">Key measurements</label>
+<p id="q-measurements-hint" style="margin: 0; font-size: 14px; line-height: 1.5; color: #5A5A57;">In mm or inches, or say you'll send the part instead.</p>
+<textarea id="q-measurements" name="measurements" class="hv-input" rows="3" maxlength="2000" aria-describedby="q-measurements-hint" style="min-height: 96px;"></textarea>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px; min-width: 0;">
+<label for="q-environment" style="font-size: 16px; font-weight: 600; line-height: 1.3;">Where it lives</label>
+<p id="q-environment-hint" style="margin: 0; font-size: 14px; line-height: 1.5; color: #5A5A57;">Heat, sun, load, or outdoors.</p>
+<input id="q-environment" name="environment" type="text" class="hv-input" maxlength="500" aria-describedby="q-environment-hint">
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr)); gap: 28px 24px;">
+<div style="display: flex; flex-direction: column; gap: 8px; min-width: 0;">
+<label for="q-quantity" style="font-size: 16px; font-weight: 600; line-height: 1.3;">Quantity</label>
+<input id="q-quantity" name="quantity" type="text" class="hv-input" maxlength="100">
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px; min-width: 0;">
+<label for="q-deadline" style="font-size: 16px; font-weight: 600; line-height: 1.3;">Deadline</label>
+<input id="q-deadline" name="deadline" type="text" class="hv-input" maxlength="100">
+</div>
+</div>
+
+<fieldset style="margin: 0; padding: 0; border: 0; min-width: 0;">
+<legend style="padding: 0 0 6px; font-size: 16px; font-weight: 600; line-height: 1.3;">Package</legend>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr)); gap: 0 24px;">
+<label class="hv-radio"><input type="radio" name="package" value="Fitment part">Fitment part</label>
+<label class="hv-radio"><input type="radio" name="package" value="Replacement part">Replacement part</label>
+<label class="hv-radio"><input type="radio" name="package" value="Product design">Product design</label>
+<label class="hv-radio"><input type="radio" name="package" value="Printed copies">Printed copies</label>
+<label class="hv-radio"><input type="radio" name="package" value="Not sure">Not sure</label>
+</div>
+</fieldset>
+</div>
+
+<div class="hv-hp" aria-hidden="true">
+<label for="q-trap">Leave this field empty</label>
+<input id="q-trap" name="hv_trap" type="text" tabindex="-1" autocomplete="off">
+</div>
+
+<div style="display: flex; flex-direction: column; align-items: flex-start; padding-top: 28px; border-top: 1px solid #D9D7D0;">
+<div id="q-turnstile" data-sitekey="TURNSTILE_SITE_KEY"></div>
+<p id="q-status" class="hv-error hv-status" role="status" aria-live="polite"></p>
+<button type="submit" class="hv-submit" style="display: inline-flex; align-items: center; min-height: 52px; padding: 14px 28px; border: 0; border-radius: 999px; background: {{accent}}; color: #FFFFFF; font: inherit; font-size: 17px; font-weight: 500;">Request a quote</button>
+<p style="margin: 16px 0 0; font-size: 14px; line-height: 1.5; color: #5A5A57;">Your details are used only to quote and reply about this job.</p>
+<noscript><p style="margin: 16px 0 0; font-size: 15px; font-weight: 500;">This form needs JavaScript turned on. Email the same details to {{email}} instead.</p></noscript>
+</div>
+</form>
+
+<div id="q-sent" hidden style="display: flex; flex-direction: column; gap: 14px; padding-top: 24px; border-top: 1px solid #121212;">
+<h3 id="q-sent-title" tabindex="-1" style="margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.2;">Request sent</h3>
+<p style="margin: 0; font-size: 16px; max-width: 34em; text-wrap: pretty;">You'll hear back from {{email}} within two business days, with a quote or a few questions. If nothing has arrived by then, check your spam folder, or email {{email}}.</p>
+<p id="q-sent-note" hidden style="margin: 0; font-size: 16px; font-weight: 500; max-width: 34em; text-wrap: pretty;">Your photos didn't come through with it. When you hear back, reply with them attached.</p>
+<button type="button" id="q-again" class="hv-link" style="align-self: flex-start;">Send another request</button>
+</div>
+
+<p style="margin: 0; padding-top: 20px; border-top: 1px solid #D9D7D0; font-size: 16px; text-wrap: pretty;">Rather use email? Send the same details to <a href="{{mailHref}}" style="color: #121212; font-weight: 500; text-decoration: underline; text-decoration-color: {{accent}}; text-decoration-thickness: 2px; text-underline-offset: 5px;">{{email}}</a>.</p>
+
+</div>
+</section>
+
+<footer style="margin-top: clamp(64px, 8vw, 120px); border-top: 1px solid #D9D7D0;">
+<div style="max-width: 1280px; margin: 0 auto; padding: 32px clamp(20px, 5vw, 72px) 40px; display: flex; flex-direction: column; gap: 20px;">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px 32px;">
+<div style="display: flex; flex-direction: column; gap: 8px;">
+<span style="font-size: 15px; font-weight: 600;">Halvek LLC</span>
+<span style="font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace; font-size: 14px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #5A5A57;">Custom part design · Portage, Michigan</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 15px; color: #5A5A57;">
+<a href="{{mailHref}}" style="color: #121212; text-decoration: none;">{{email}}</a>
+<span>© 2026</span>
+</div>
+</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5A5A57; max-width: 60em;">Milwaukee and Packout are trademarks of Milwaukee Electric Tool Corporation. Logitech and G923 are trademarks of Logitech. Halvek is not affiliated with or endorsed by either company.</p>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#A4472A","section":"Look"},"email":{"editor":"text","default":"quotes@halvek.co","section":"Contact"},"$preview":{"width":1440,"height":10000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const email = this.props.email ?? 'quotes@halvek.co';
+    return {
+      accent: this.props.accent ?? '#A4472A',
+      email: email,
+      mailHref: 'mailto:' + email + '?subject=' + encodeURIComponent('Quote request')
+    };
+  }
+}
+</script>
+</body>
+</html>
