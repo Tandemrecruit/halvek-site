@@ -11,9 +11,10 @@
 import { Buffer } from "node:buffer";
 
 const MAX_BODY_BYTES = 8 * 1024 * 1024; // whole request
-// Attachments are base64-encoded here, which costs CPU time, and the Workers free plan allows
-// 10 ms per request. Photos are resized in the browser first (about 300-600 KB each), so 5 MB
-// covers a full set of eight.
+// Photos are resized in the browser first (about 300-600 KB each), so 5 MB covers a full set of
+// eight and keeps the email well inside Zoho's 15 MB limit. Receiving and encoding the files
+// costs CPU time (about 20 ms for three photos), which is why the Worker needs the Workers Paid
+// plan: the free plan allows 10 ms per request.
 const MAX_FILES = 8;
 const MAX_FILE_BYTES = 5 * 1024 * 1024;
 const MAX_TOTAL_FILE_BYTES = 5 * 1024 * 1024;

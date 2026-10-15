@@ -56,6 +56,9 @@ form, so the page itself confirms the request.
    build). Secrets set directly under Settings → Variables and Secrets also work and are left
    alone.
 
+5. **Workers Paid plan.** Compute → Workers plans → Upgrade (under Paid). Requests with
+   photos need more CPU time than the free plan allows (see "Limits worth knowing").
+
 To deploy from a computer instead: install Node.js 20 or later, then in this folder run
 `npm install`, `npx wrangler login` and `npm run deploy`. Secrets can be set with
 `npx wrangler secret put TURNSTILE_SECRET_KEY` and `npx wrangler secret put ZEPTOMAIL_TOKEN`.
@@ -86,11 +89,12 @@ error paths, the no-JavaScript fallback and the rate limit. Screenshots go to
 
 ## Limits worth knowing
 
-- The Workers free plan allows 10 ms of CPU per request. Encoding attachments costs roughly
-  3 ms per MB, so a typical request (two to four photos) uses a few milliseconds, and the
-  largest allowed (5 MB) can go over. Cloudflare tolerates occasional overruns; if the Worker's
-  metrics ever show "Exceeded CPU", the fix is the Workers Paid plan ($5 a month) or a lower
-  file cap in `src/worker.js` and `src/client/quote.js`.
+- The Worker needs the Workers Paid plan ($5 a month). The first real request (three phone
+  photos, 1.7 MB) used 20 ms of CPU, and the free plan allows 10 ms per request, tolerating
+  only occasional overruns. About half of that cost is receiving and unpacking the upload, so
+  no code change brings a photo request under 10 ms. Paid allows 30 seconds per request by
+  default, and this site stays well inside the usage the plan includes.
 - Zoho limits a whole email to 15 MB; the 5 MB file cap stays well inside it.
-- Optional hardening: a WAF rate-limiting rule for `POST /api/quote` (the free plan includes
-  one) stops floods before they reach the Worker's 100,000 requests a day.
+- Optional hardening: a WAF rate-limiting rule for `POST /api/quote` (Cloudflare's free zone
+  plan includes one) stops floods before they reach the Worker. On Workers Paid, requests past
+  the 10 million a month included cost $0.30 per million.
