@@ -2,8 +2,8 @@
 
 The Halvek website and its quote form, deployed as one Cloudflare Worker (`long-firefly-ffac`).
 
-- `public/` is the site as served: the home page, the 404 page, icons and the form script. It is
-  generated; don't edit it by hand.
+- `public/` is the site as served: the home page, the 404 page, icons, the form script, and
+  `sitemap.xml` and `robots.txt` for search engines. It is generated; don't edit it by hand.
 - `design/Main.dc.html` is the page's design source (the Claude design canvas "Halvek.co
   Portfolio"). `tools/export_site.py` turns it into `public/`.
 - `src/worker.js` handles `POST /api/quote`. Everything else is served straight from `public/`
@@ -78,6 +78,19 @@ To deploy from a computer instead: install Node.js 20 or later, then in this fol
 
 Keep the form markup's ids (`quote-form`, `q-name`, `q-files`, `q-turnstile`, `q-status`,
 `q-sent` and the rest) when editing the design: the form script looks them up by id.
+
+## Search engines
+
+- The page title comes from the design canvas; the meta description is in `tools/export_site.py`.
+- `export_site.py` also writes business details for search engines (schema.org JSON-LD in the
+  page head: name, email, Portage MI, the area served). It holds only facts the page already
+  states, with no street address and no prices, so keep it that way or update it alongside the
+  page.
+- `sitemap.xml` lists the pages in `PAGES` in `export_site.py`. Add a path there when a new page
+  goes up.
+- `robots.txt` only points to the sitemap. Cloudflare's managed robots.txt (Security → Settings →
+  Bot traffic) is placed in front of it at the edge: it blocks AI training crawlers and allows
+  search engines and AI search tools.
 
 ## Tests
 

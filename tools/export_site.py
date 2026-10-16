@@ -73,6 +73,47 @@ description = (
     "measurements, and you'll get a firm price before any work starts. Portage, Michigan."
 )
 
+SITE_URL = "https://halvek.co"
+# Every page that should be in search results. Add a path here when a new page goes up.
+PAGES = ["/"]
+
+# Who the business is, for search engines (schema.org). Only facts already stated on the page:
+# no street address, and no prices, which would go stale the next time the page changes.
+business = {
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "ProfessionalService",
+            "@id": f"{SITE_URL}/#business",
+            "name": "Halvek",
+            "legalName": "Halvek LLC",
+            "url": f"{SITE_URL}/",
+            "email": EMAIL,
+            "logo": f"{SITE_URL}/og-image.png",
+            "image": f"{SITE_URL}/og-image.png",
+            "description": description,
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Portage",
+                "addressRegion": "MI",
+                "addressCountry": "US",
+            },
+            "areaServed": [
+                {"@type": "City", "name": "Portage, Michigan"},
+                {"@type": "City", "name": "Kalamazoo, Michigan"},
+            ],
+        },
+        {
+            "@type": "WebSite",
+            "@id": f"{SITE_URL}/#website",
+            "url": f"{SITE_URL}/",
+            "name": "Halvek",
+            "publisher": {"@id": f"{SITE_URL}/#business"},
+        },
+    ],
+}
+structured_data = json.dumps(business, indent=1, ensure_ascii=False).replace("</", "<\\/")
+
 head_common = f"""<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 {font_link}
@@ -100,6 +141,9 @@ index = f"""<!doctype html>
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://challenges.cloudflare.com">
 {head_common}
+<script type="application/ld+json">
+{structured_data}
+</script>
 <script src="/quote.js" defer></script>
 </head>
 <body>
@@ -140,6 +184,19 @@ if out.exists():
 out.mkdir(parents=True)
 (out / "index.html").write_text(index, encoding="utf-8")
 (out / "404.html").write_text(not_found, encoding="utf-8")
+
+# No <lastmod>: a build date would change on every export whether or not the page did.
+sitemap_urls = "\n".join(f"  <url><loc>{SITE_URL}{path}</loc></url>" for path in PAGES)
+(out / "sitemap.xml").write_text(
+    '<?xml version="1.0" encoding="UTF-8"?>\n'
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    f"{sitemap_urls}\n"
+    "</urlset>\n",
+    encoding="utf-8",
+)
+# Cloudflare's managed robots.txt (which turns away AI training crawlers) is put in front of
+# this file, so it only needs to point to the sitemap. Everything not disallowed is allowed.
+(out / "robots.txt").write_text(f"Sitemap: {SITE_URL}/sitemap.xml\n", encoding="utf-8")
 
 client = ROOT / "src" / "client"
 shutil.copyfile(client / "quote.js", out / "quote.js")
